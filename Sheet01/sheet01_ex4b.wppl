@@ -1,0 +1,22 @@
+var step = function(xt, vt, h, a, s, ts) {
+  if (s==ts) { return xt; }
+  else {
+    step(xt+h*vt, vt+h*a, h, a, s+1, ts)
+  }
+}
+
+var dynamics = function(){
+  var position_init = sample(Gaussian( {mu: 0, sigma: 1} ))
+  var velocity_init = sample(Uniform( {a:1, b:10} ))
+  var acceleration = sample(Uniform( {a:1, b:2} ))
+  var starting_time = 0
+  var finishing_time = 10
+  var step_size = 1
+  var total_steps = (finishing_time - starting_time) / step_size
+  var count_steps = 0
+  var position_final = step(position_init, velocity_init, step_size, acceleration, count_steps, total_steps)
+  observe(Gaussian({mu: 150, sigma: 10}), position_final)
+  return velocity_init
+}
+var particle = Infer({method:'rejection', samples:10000}, dynamics)
+print(expectation(particle))
