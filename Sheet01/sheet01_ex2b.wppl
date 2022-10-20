@@ -1,0 +1,10 @@
+var p = 0.5
+var GR = function (n1, n2, steps)
+{
+  if (n1 == 0) { return steps; }
+  if (n2 == 0) { return steps; }
+  else { flip(p) ? GR(n1 + 1, n2 - 1, steps+1): GR(n1 - 1, n2 + 1, steps+1); }
+}
+
+var distGR = Infer({method:'rejection', samples:10000}, function(){GR(5, 5, 0)})
+print(expectation(distGR))
