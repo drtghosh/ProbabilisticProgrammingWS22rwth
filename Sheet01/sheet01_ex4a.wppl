@@ -18,3 +18,7 @@ var dynamics = function(){
 }
 var particle = Infer({method:'rejection', samples:10000}, dynamics)
 print(expectation(particle))
+
+/* Answer :
+The expectated value of the final position is approximately 122.5 
+*/
