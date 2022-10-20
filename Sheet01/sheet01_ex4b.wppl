@@ -1,4 +1,4 @@
-var step = function(xt, vt, h, a, s, ts) {
+var step = function(xt, vt, h, a, s, ts) {    //function to reach final position
   if (s==ts) { return xt; }
   else {
     step(xt+h*vt, vt+h*a, h, a, s+1, ts)
@@ -14,9 +14,9 @@ var dynamics = function(){
   var step_size = 1
   var total_steps = (finishing_time - starting_time) / step_size
   var count_steps = 0
-  var position_final = step(position_init, velocity_init, step_size, acceleration, count_steps, total_steps)
-  observe(Gaussian({mu: 150, sigma: 10}), position_final)
-  return velocity_init
+  var position_final = step(position_init, velocity_init, step_size, acceleration, count_steps, total_steps)  //Calculating final position using initialised values
+  observe(Gaussian({mu: 150, sigma: 10}), position_final)                                          //Checking if final position satisfies its parental distribution
+  return velocity_init                                                                            //Return initial velocity, for which final position is valid
 }
 var particle = Infer({method:'rejection', samples:10000}, dynamics)
 print(expectation(particle))
