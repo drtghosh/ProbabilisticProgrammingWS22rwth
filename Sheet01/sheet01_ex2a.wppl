@@ -1,0 +1,11 @@
+var inc = function(x) { return x + 10; }
+var player1_options = mapN(inc, 20)
+var p = 0.5
+var GR = function (n1, n2)
+{
+  if (n1 == 0) { return 'player2 wins'; }
+  if (n2 == 0) { return 'player1 wins'; }
+  else { flip(p) ? GR(n1 + 1, n2 - 1): GR(n1 - 1, n2 + 1); }
+}
+
+display(map(function(n1) { Infer(function(){GR(n1, 10)})}, player1_options))
