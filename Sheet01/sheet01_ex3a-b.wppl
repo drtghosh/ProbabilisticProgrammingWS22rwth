@@ -1,0 +1,29 @@
+var dungeonsAndDragonsSolution = function (faces,throws) {
+  if (throws == 0) return 0;
+  var maxResultOfPreviousThrows = dungeonsAndDragonsSolution(faces, throws-1);
+  var diceResult = 1 + sample(RandomInteger({n:faces}));
+  return diceResult >= maxResultOfPreviousThrows ? diceResult : maxResultOfPreviousThrows
+}
+
+var faces = 20;
+var dist = Infer(function(){dungeonsAndDragonsSolution(faces,2)})
+print("The Expectation is: " + expectation(dist))
+viz.auto(dist) // print the distribution of the max value recieved
+var ratio = expectation(dist)/faces
+print("The required ratio is: " + ratio)
+
+print("--------------------------------------------------------------")
+
+var dist2 = Infer(function(){dungeonsAndDragonsSolution(faces,3)})
+print("The Expectation is: " + expectation(dist2))
+viz.auto(dist2) // print the distribution of the max value recieved
+var ratio2 = expectation(dist2)/faces
+print("The required ratio is: " + ratio2)
+
+print("--------------------------------------------------------------")
+
+var dist3 = Infer(function(){dungeonsAndDragonsSolution(faces,4)})
+print("The Expectation is: " + expectation(dist3))
+viz.auto(dist3) // print the distribution of the max value recieved
+var ratio3 = expectation(dist3)/faces
+print("The required ratio is: " + ratio3)
