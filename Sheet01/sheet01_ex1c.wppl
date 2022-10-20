@@ -1,0 +1,16 @@
+var montyHallSolution3 = function () {
+  var chosen_door_us = sample(RandomInteger({n: 3}))
+  var with_car_door = sample(RandomInteger({n: 3}))
+  var remaining_doors = filter(function(door) {
+    door!=chosen_door_us
+  }, [0, 1, 2])
+  var chosen_door_monty = categorical({vs: remaining_doors})
+  var not_opened_door_array = filter(function(door) {
+    door!=chosen_door_us & door!=chosen_door_monty
+  }, [0, 1, 2])
+  var not_opened_door = not_opened_door_array[0]
+  return with_car_door == not_opened_door ? "switch": "stay"
+}
+
+var montyHallOut3 = Infer(montyHallSolution3)
+viz.auto(montyHallOut3)
