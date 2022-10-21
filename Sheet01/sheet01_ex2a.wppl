@@ -1,3 +1,5 @@
+//Exercise 2A
+
 var inc = function(x) { return x + 10; }
 var player1_options = mapN(inc, 20)
 var p = 0.5
