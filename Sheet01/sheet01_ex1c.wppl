@@ -1,9 +1,13 @@
 var montyHallSolution3 = function () {
+  //Door chosen by us(the player)
   var chosen_door_us = sample(RandomInteger({n: 3}))
+  //Door with the car
   var with_car_door = sample(RandomInteger({n: 3}))
+  //Door choices for Monty
   var remaining_doors = filter(function(door) {
     door!=chosen_door_us
   }, [0, 1, 2])
+  //Monty chooses a door uniformly at random, but not the player’s choice
   var chosen_door_monty = categorical({vs: remaining_doors})
   var not_opened_door_array = filter(function(door) {
     door!=chosen_door_us & door!=chosen_door_monty
@@ -14,3 +18,4 @@ var montyHallSolution3 = function () {
 
 var montyHallOut3 = Infer(montyHallSolution3)
 viz.auto(montyHallOut3)
+print(montyHallOut3)

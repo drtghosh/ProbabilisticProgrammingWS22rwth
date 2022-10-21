@@ -1,9 +1,14 @@
 var montyHallSolution2 = function () {
+  //Door chosen by us(the player)
   var chosen_door_us = sample(RandomInteger({n: 3}))
+  //Door with the car
   var with_car_door = sample(RandomInteger({n: 3}))
+  //Door choices for Monty
   var remaining_doors = filter(function(door) {
     door!=chosen_door_us & door!=with_car_door
   }, [0, 1, 2])
+  //Monty chooses the door with lowest number which is neither the
+  //player’s choice nor the door with the car behind it
   var chosen_door_monty = remaining_doors[0]
   var not_opened_door_array = filter(function(door) {
     door!=chosen_door_us & door!=chosen_door_monty
@@ -14,3 +19,4 @@ var montyHallSolution2 = function () {
 
 var montyHallOut2 = Infer(montyHallSolution2)
 viz.auto(montyHallOut2)
+print(montyHallOut2)
