@@ -1,3 +1,5 @@
+//Exercise 4A
+
 var step = function(xt, vt, h, a, s, ts){                   //Function to reach final position
     if (s==ts) { return xt; }
     else {
