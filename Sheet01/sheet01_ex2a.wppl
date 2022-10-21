@@ -1,13 +1,26 @@
-//Exercise 2A
+/* 
+Exercise 2(a)
+n1 := number of pennies that Player 1 starts with
+n2 := number of pennies that Player 2 starts with
+*/
 
 var inc = function(x) { return x + 10; }
-var player1_options = mapN(inc, 20)
-var p = 0.5
+var player1_options = mapN(inc, 20)  //creating a list of possible starting pennies of Player 1
+var p = 0.5  //setting winning probability of each player as 0.5
 var GR = function (n1, n2)
 {
-  if (n1 == 0) { return 'player2 wins'; }
-  if (n2 == 0) { return 'player1 wins'; }
+  if (n1 == 0) { return 'player2 wins'; }  //terminates when Player 2 wins
+  if (n2 == 0) { return 'player1 wins'; }  //terminates when Player 1 wins
   else { flip(p) ? GR(n1 + 1, n2 - 1): GR(n1 - 1, n2 + 1); }
 }
 
-display(map(function(n1) { Infer(function(){GR(n1, 10)})}, player1_options))
+//player 2 starts with 10 pennies
+/* 
+We start with player 1 having 10 pennies and increment to 29 pennies and check
+her winning probability 
+*/
+print(map(function(n1) { Infer(function(){GR(n1, 10)})}, player1_options))
+/*
+Answer: minimum number of pennies the first player should bring so that 
+she wins with probability at least 70% comes out as 24.
+*/
