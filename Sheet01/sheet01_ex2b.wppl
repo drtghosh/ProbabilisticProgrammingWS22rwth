@@ -4,7 +4,7 @@ n1 := number of pennies that Player 1 starts with
 n2 := number of pennies that Player 2 starts with
 */
 
-var p = 0.5                             //setting winning probability at 0.5
+var p = 0.5                             //setting winning probability of each player as 0.5
 var GR = function (n1, n2, steps)        
 {
   if (n1 == 0) { return steps; }        //terminates when Player 2 wins
