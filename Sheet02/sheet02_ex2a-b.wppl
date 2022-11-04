@@ -1,0 +1,30 @@
+var uniformBallSamplingModel = function(d, r){
+  var sample_coordinance = repeat(d, function(){return uniform({a:-1,b:1})});
+  var sample_coordinance_squared = map(function(x) {return x*x},sample_coordinance)
+  var sampled_radius = (Math.sqrt(sum(sample_coordinance_squared)));
+  condition(sampled_radius <= r);
+  return sample_coordinance;
+}
+
+var radius = 1;
+var dimensions = 10;
+var n = 1000;
+
+print("---------------------------Question 2b--------------------------")
+print("--------------------Running Rejection Sampling------------------")
+var start_time = performance.now()
+var options_rejection = {method: 'rejection', samples: n};
+var posterior_by_rejection = Infer(options_rejection, function(){uniformBallSamplingModel(dimensions, radius)});
+var end_time = performance.now()
+var execution_time = end_time - start_time;
+print("finished 'Rejection Sampling' in " + execution_time + " ms")
+viz.auto(posterior_by_rejection);
+
+print("----------------------Running MCMC Sampling--------------------")
+var start_time = performance.now()
+var options_rejection_mcmc = {method: "MCMC", kernel: 'MH', samples: n};
+var posterior_by_mcmc = Infer(options_rejection_mcmc, function(){uniformBallSamplingModel(dimensions, radius)});
+var end_time = performance.now()
+var execution_time = end_time - start_time;
+print("finished 'MCMC with Metropolis-Hastings kernel' in " + execution_time + " ms")
+viz.auto(posterior_by_mcmc)
