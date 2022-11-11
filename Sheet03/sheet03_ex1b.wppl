@@ -1,0 +1,73 @@
+//first target distribution (not normalized):
+var target_distribution1 = function(x){
+  return (0.5*Math.exp((-Math.pow((x-2), 2))/2) + 0.5*Math.exp((-Math.pow((x+2), 2))/2))
+}
+
+//second target distribution (not normalized):
+var target_distribution2 = function(x){
+  return (0.5*Math.exp((-Math.pow((x-2), 2))/2) + 0.5*Math.exp((-Math.pow((x+2), 2))/2))
+}
+
+//symmetric sampling kernel:
+var sampling_proposal = function(x){
+  return sample(Gaussian({mu: x, sigma: Math.sqrt(0.3)}))
+}
+
+// the MH acceptance rate with symmetric kernel for target distribution 1:
+var acceptance_rate1 = function (x_new, x_last){
+  if (target_distribution1(x_last) != 0){
+    var r = target_distribution1(x_new) / target_distribution1(x_last)
+    return r
+  }
+}
+
+// the MH acceptance rate with symmetric kernel for target distribution 2:
+var acceptance_rate2 = function (x_new, x_last){
+  if (target_distribution2(x_last) != 0){
+    var r = target_distribution2(x_new) / target_distribution2(x_last)
+    return r
+  }
+}
+
+//transitioning to next state for target distribution 1:
+var transition1 = function(x){
+  var proposed_x = sampling_proposal(x)
+  var rate = acceptance_rate1(x, proposed_x, target_distribution1)
+  if (rate>=1) {
+    return proposed_x;
+  }
+  else {
+    flip(rate) ? proposed_x : x;
+  }
+}
+
+//transitioning to next state for target distribution 2:
+var transition2 = function(x){
+  var proposed_x = sampling_proposal(x)
+  var rate = acceptance_rate2(x, proposed_x, target_distribution2)
+  if (rate>=1) {
+    return proposed_x;
+  }
+  else {
+    flip(rate) ? proposed_x : x;
+  }
+}
+
+//the recursion part to calculate Metropolis-Hastings algorithm for target distribution 1:
+var mh1 = function(last_state, i){
+  return ((i == 1) ? [last_state] : mh1(transition1(last_state), i-1).concat(last_state))
+}
+
+//the recursion part to calculate Metropolis-Hastings algorithm for target distribution 2:
+var mh2 = function(last_state, i){
+  return ((i == 1) ? [last_state] : mh2(transition2(last_state), i-1).concat(last_state))
+}
+
+var x0 = 0.2
+var n = 20000
+//sampled points and visualization (histogram) for target distribution 1:
+var sample1 = mh1(x0, n)
+viz.hist(sample1)
+//Sampled points and visualization (histogram) for target distribution 2:
+var sample2 = mh2(x0, n)
+viz.hist(sample2).

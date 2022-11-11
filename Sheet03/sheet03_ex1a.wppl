@@ -1,0 +1,36 @@
+//the target distribution (not normalized):
+//var target_distribution = function(x){
+  //return ((-3<x && x<3) ? -0.1319*(Math.pow(x,4)) + 1.132*(Math.pow(x,2)) + 0.5 : 0);
+//}
+
+//symmetric sampling kernel
+//var sampling_proposal = function(x){
+//  return sample(Gaussian({mu: x, sigma: Math.sqrt(0.3)}))
+//}
+
+// the MH acceptance rate with symmetric kernel:
+var acceptance_rate = function (x_new, x_last){
+  if (target_distribution(x_last) != 0){
+    var r = target_distribution(x_new) / target_distribution(x_last)
+    return r
+  }
+}
+
+//transitioning to next state
+var transition = function(x){
+  var proposed_x = sampling_proposal(x)
+  var rate = acceptance_rate(x, proposed_x, target_distribution)
+  if (rate>=1) {
+    return proposed_x;
+  }
+  else {
+    flip(rate) ? proposed_x : x;
+  }
+}
+
+//the recursion part to calculate Metropolis-Hastings algorithm
+var mh = function(last_state, i){
+  return ((i == 1) ? [last_state] : mh(transition(last_state), i-1).concat(last_state))
+}
+
+//use the mh function with a function f and a symmetric sampling kernel for further results.
